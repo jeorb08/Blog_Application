@@ -7,4 +7,5 @@ import com.blogapplication.EchoWrite.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
         public boolean existsByEmail(String email);
+        public User findByEmail(String email);
 }
