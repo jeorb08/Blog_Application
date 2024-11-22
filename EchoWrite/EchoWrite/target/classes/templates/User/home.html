@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base:: Layout(~{::section})">
 <head>
-    <meta charset="ISO-8859-1">
-    <title>Insert title here</title>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+
 </head>
 <body>
-    <h1>User After Login: Home Page</h1>
+
+	<section>
+		<h4>Home Page</h4>
+        <a th:href="@{/profile}">Profile</a>
+        <a th:href="@{/logout}">Logout</a>
+
+        
+	</section>
+
 </body>
 </html>

@@ -4,24 +4,8 @@
 
 <head>
     <meta charset="ISO-8859-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration</title>
-    <script>
-        // JavaScript to hide the message after 5 seconds
-        window.onload = function () {
-            const messageDiv = document.getElementById('msg');
-            if (messageDiv) {
-                setTimeout(() => {
-                    messageDiv.style.display = 'none';
-                }, 5000); // 5 seconds
-            }
-        };
-    </script>
-    <style>
-        #msg {
-            color: green;
-            font-weight: bold;
-        }
-    </style>
     
 </head>
 <body>
@@ -35,6 +19,7 @@
                         </div>
                         <th:block th:if="${session.msg}">
                             <p class="text-center fs-4 text-success">[[${session.msg}]]</p>
+                            <th:block th:text="${@userServiceImpl.removeSessionMessage()}"></th:block>
                             
                             
                         </th:block>
