@@ -43,7 +43,7 @@ public class homeController {
         public String registration(){
                 return "registration";
         }
-        @GetMapping("/user/profile")
+        @GetMapping("/user/")
 	public String profile(Principal p, Model m) {
 		String email = p.getName();
 		User user = UserRepository.findByEmail(email);
