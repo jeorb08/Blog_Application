@@ -25,15 +25,15 @@ public class UserController {
 	public void commonUser(Principal p, Model m) {
 		if (p != null) {
 			String email = p.getName();
-			User user = userRepo.findByEmail(email);
+			User user = UserRepository.findByEmail(email);
 			m.addAttribute("user", user);
 		}
 
 	}
   
-    @GetMapping("/")
-        public String home() {
-            return "user/home";
+    @GetMapping("/profile")
+        public String profile() {
+            return "profile";
         }
         
 

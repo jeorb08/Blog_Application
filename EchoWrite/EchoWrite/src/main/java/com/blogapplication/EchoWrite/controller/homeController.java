@@ -26,6 +26,9 @@ public class homeController {
         @Autowired
 	private UserRepository userRepo;
 
+       
+
+
         @GetMapping("/")
         public String index(){
                 return "index";
@@ -40,6 +43,13 @@ public class homeController {
         public String registration(){
                 return "registration";
         }
+        @GetMapping("/user/profile")
+	public String profile(Principal p, Model m) {
+		String email = p.getName();
+		User user = UserRepository.findByEmail(email);
+		m.addAttribute("user", user);
+		return "profile";
+	}
         @GetMapping("/user/home")
 	public String home() {
 		return "home";

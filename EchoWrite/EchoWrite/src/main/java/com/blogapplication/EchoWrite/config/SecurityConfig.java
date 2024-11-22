@@ -9,11 +9,12 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
+
+    
     @Bean
     public UserDetailsService getUserDetailsService() {
         return new UserDetailsServiceImpl() ;
@@ -39,22 +40,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain FilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/user/**").hasRole("USER")
-                                .anyRequest().permitAll()
-                )
-                .formLogin(form -> form
-                                .loginPage("/signin")
-                                .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/user/")
-                                .permitAll()
-                )
-                
-                ;
 
-        return http.build();
-    }
-}
+
+        http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(requests -> requests.requestMatchers("/", "/registration", "/signin", "/createUser").permitAll()
+                        .requestMatchers("/user/**").authenticated())
+                .formLogin(login -> login.loginPage("/signin").loginProcessingUrl("/userLogin")
+                        //.usernameParameter("email")
+                        .defaultSuccessUrl("/user/profile").permitAll());
+		return http.build();
+	}
+	}
+    
+

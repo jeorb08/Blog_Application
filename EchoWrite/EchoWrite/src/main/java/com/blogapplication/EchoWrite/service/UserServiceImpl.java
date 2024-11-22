@@ -23,6 +23,8 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(password);
 		user.setRole("ROLE_USER");
                 return userRepo.save(user); 
+
+                
         }
         @Override
         public boolean checkEmail(String email){
