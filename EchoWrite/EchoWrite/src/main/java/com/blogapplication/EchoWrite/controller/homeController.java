@@ -26,6 +26,16 @@ public class homeController {
         @Autowired
 	private UserRepository userRepo;
 
+        @ModelAttribute
+	public void commonUser(Principal p, Model m) {
+		if (p != null) {
+			String email = p.getName();
+			User user = UserRepository.findByEmail(email);
+			m.addAttribute("user", user);
+		}
+
+	}
+
        
 
 
@@ -43,7 +53,7 @@ public class homeController {
         public String registration(){
                 return "registration";
         }
-        @GetMapping("/user/")
+        @GetMapping("/user/profile")
 	public String profile(Principal p, Model m) {
 		String email = p.getName();
 		User user = UserRepository.findByEmail(email);
@@ -61,7 +71,7 @@ public class homeController {
         public String createuser(@ModelAttribute User user, HttpSession session){
 
                 //System.out.println(user);
-                boolean f= userService.checkEmail(user.getEmail());
+                boolean f=  userService.checkEmail(user.getEmail());
                 if(f){
                         session.setAttribute("msg", "Email id already Exist");
                 }

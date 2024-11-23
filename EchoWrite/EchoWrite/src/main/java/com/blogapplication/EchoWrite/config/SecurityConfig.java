@@ -45,9 +45,9 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(requests -> requests.requestMatchers("/", "/registration", "/signin", "/createUser").permitAll()
                         .requestMatchers("/user/**").authenticated())
-                .formLogin(login -> login.loginPage("/signin").loginProcessingUrl("/login")
+                .formLogin(login -> login.loginPage("/signin").loginProcessingUrl("/userLogin")
                         //.usernameParameter("email")
-                        .defaultSuccessUrl("/user/").permitAll());
+                        .defaultSuccessUrl("/user/profile").permitAll());
 		return http.build();
 	}
 	}
