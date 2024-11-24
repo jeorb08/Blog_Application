@@ -6,9 +6,8 @@ import com.blogapplication.EchoWrite.model.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-        public static User findByEmail(String emaill) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'findByEmail'");
-        }
+       
+
+        
 }
         

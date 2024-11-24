@@ -1,12 +1,16 @@
 package com.blogapplication.EchoWrite.service;
+import org.springframework.stereotype.Service;
+
 import com.blogapplication.EchoWrite.model.User;
 
 
+@Service
 public interface UserService {
-   public User createUser(User user);
-  
+   
    public void removeSessionMessage();
 
-public boolean checkEmail(String email);
+
+
+public  User createUser(User user) ;
         
 } 
