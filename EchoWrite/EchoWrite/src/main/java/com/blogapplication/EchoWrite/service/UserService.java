@@ -1,16 +1,19 @@
 package com.blogapplication.EchoWrite.service;
-import org.springframework.stereotype.Service;
 
 import com.blogapplication.EchoWrite.model.User;
+import com.blogapplication.EchoWrite.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 
 @Service
-public interface UserService {
-   
-   public void removeSessionMessage();
+public class UserService {
 
+    @Autowired
+    private UserRepository userRepository;
 
-
-public  User createUser(User user) ;
-        
-} 
+    public Optional<User> login(String email, String password) {
+        return userRepository.findByEmailAndPassword(email, password);
+    }
+}
