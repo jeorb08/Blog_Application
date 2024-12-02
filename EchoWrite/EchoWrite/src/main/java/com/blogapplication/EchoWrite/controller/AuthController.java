@@ -19,6 +19,13 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
+    
+    // Redirect root URL to login page
+    @GetMapping("/")
+    public String redirectToLogin() {
+        return "redirect:/login";
+    }
+
     // Serve the login page
     @GetMapping("/login")
     public String showLoginPage(HttpSession session) {
