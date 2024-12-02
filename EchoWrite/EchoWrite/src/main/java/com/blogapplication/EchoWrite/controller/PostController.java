@@ -29,12 +29,14 @@ public class PostController {
 
     // Route for handling the form submission
     @PostMapping("/create")
-    public String createPost(@ModelAttribute Post post, @RequestParam("userId") Long userId) {
-        User user = userService.getUserById(userId);
-        post.setUser(user); // Set the user for the post
-        postService.createPost(post);
-        return "redirect:/posts";
+    public String createPost(@ModelAttribute Post post) {
+        // Fetch the default user with ID 1
+        User defaultUser = userService.getUserById(1L); // Replace with appropriate method to fetch the user
+        post.setUser(defaultUser); // Associate the post with the default user
+        postService.createPost(post); // Save the post
+        return "redirect:/dashboard";
     }
+    
 
     // Route for editing a post by ID
     @GetMapping("/edit/{id}")
@@ -60,11 +62,7 @@ public class PostController {
         postService.deletePost(id);
         return "redirect:/posts";
     }
+   
 
-    // Route for displaying all posts
-    @GetMapping
-    public String listPosts(Model model) {
-        model.addAttribute("posts", postService.getAllPosts());
-        return "list_posts";
-    }
+
 }
