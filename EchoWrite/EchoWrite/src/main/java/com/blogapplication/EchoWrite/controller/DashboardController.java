@@ -1,7 +1,9 @@
 package com.blogapplication.EchoWrite.controller;
 
 import com.blogapplication.EchoWrite.model.Post;
+import com.blogapplication.EchoWrite.model.User;
 import com.blogapplication.EchoWrite.service.PostService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,13 +18,22 @@ public class DashboardController {
     private PostService postService;
 
     @GetMapping("/dashboard")
-    public String dashboard(Model model) {
-        // Fetch all posts
-        List<Post> posts = postService.getAllPosts();
+    public String dashboard(HttpSession session, Model model) {
+        // Get the current user from the session
+        User currentUser = (User) session.getAttribute("user");
 
-        // Add posts to the model
+        // If no user is logged in, redirect to login
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+
+        // Add the user to the model
+        model.addAttribute("user", currentUser);
+
+        // Fetch all posts and add them to the model
+        List<Post> posts = postService.getAllPosts();
         model.addAttribute("posts", posts);
 
-        return "dashboard"; // This will look for dashboard.html in src/main/resources/templates
+        return "dashboard";
     }
 }

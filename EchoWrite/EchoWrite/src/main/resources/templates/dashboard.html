@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>Blog Home - Start Bootstrap Template</title>
+    <title>Blog Home - Blog Application</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" th:href="@{/assets/favicon.ico}"/>
     <!-- Core theme CSS (includes Bootstrap)-->
@@ -26,14 +26,12 @@
             }
         }
     </style>
-
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
         <div class="container-fluid">
             <!-- Navbar brand -->
-            <a class="navbar-brand" target="_blank" href="https://mdbootstrap.com/docs/standard/">
-                <img src="https://mdbootstrap.com/img/logo/mdb-transaprent-noshadows.png" height="16" alt=""
-                     loading="lazy" style="margin-top: -3px;"/>
+            <a class="navbar-brand" href="#">
+                Blog Application
             </a>
             <button class="navbar-toggler" type="button" data-mdb-collapse-init data-mdb-target="#navbarExample01"
                     aria-controls="navbarExample01" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +42,8 @@
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" th:href="@{/}">Home</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- Show Create Post if Role is Admin -->
+                    <li class="nav-item" th:if="${user.role == 'admin'}">
                         <a class="nav-link" aria-current="page" th:href="@{/posts/create}">Create Post</a>
                     </li>
                 </ul>
@@ -54,44 +53,15 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/logout}">Logout</a>
                     </li>
-
-                    <!-- Icons -->
-                    <li class="nav-item me-3 me-lg-0">
-                        <a class="nav-link" href="https://www.youtube.com/channel/UC5CF7mLQZhvx8O5GODZAhdA"
-                           rel="nofollow" target="_blank">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item me-3 me-lg-0">
-                        <a class="nav-link" href="https://www.facebook.com/mdbootstrap" rel="nofollow" target="_blank">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item me-3 me-lg-0">
-                        <a class="nav-link" href="https://twitter.com/MDBootstrap" rel="nofollow" target="_blank">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item me-3 me-lg-0">
-                        <a class="nav-link" href="https://github.com/mdbootstrap/mdb-ui-kit" rel="nofollow"
-                           target="_blank">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </li>
                 </ul>
             </div>
         </div>
     </nav>
     <!-- Navbar -->
-
     <!-- Jumbotron -->
     <div id="intro" class="p-5 text-center bg-light">
-        <h1 class="mb-3 h2">Learn Bootstrap 5 with MDB</h1>
-        <p class="mb-3">Best & free guide of responsive web design</p>
-        <a class="btn btn-primary m-2" href="https://www.youtube.com/watch?v=c9B4TPnak1A" role="button" rel="nofollow"
-           data-mdb-ripple-init target="_blank">Start tutorial</a>
-        <a class="btn btn-primary m-2" href="https://mdbootstrap.com/docs/standard/" target="_blank"
-           data-mdb-ripple-init role="button">Download MDB UI KIT</a>
+        <h1 class="mb-3 h2">Welcome to the Blog</h1>
+        <p class="mb-3">Explore, Read, and Share Your Stories</p>
     </div>
     <!-- Jumbotron -->
 </header>
@@ -102,8 +72,8 @@
     <div class="container">
         <!-- Section: Content -->
         <section class="text-center">
-            <h4 class="mb-5"><strong>Latest posts</strong></h4>
-    
+            <h4 class="mb-5"><strong>Latest Posts</strong></h4>
+
             <div class="row">
                 <!-- Loop through the posts passed to the model -->
                 <div class="col-lg-4 col-md-6 mb-4" th:each="post : ${posts}">
@@ -117,64 +87,33 @@
                         <div class="card-body">
                             <h5 class="card-title" th:text="${post.postTitle}">Post Title</h5>
                             <p class="card-text" th:text="${post.postDescription}">Post Description</p>
-                            <a href="#!" class="btn btn-primary">Read</a>
+
+                            <!-- Admin Buttons -->
+                            <div th:if="${user.role == 'admin'}">
+                                <a th:href="@{/posts/edit/{id}(id=${post.id})}" class="btn btn-warning">Edit</a>
+                                <a th:href="@{/posts/delete/{id}(id=${post.id})}" class="btn btn-danger"
+                                   onclick="return confirm('Are you sure you want to delete this post?')">Delete</a>
+                            </div>
+
+                            <!-- Read More for Non-Admin -->
+                            <div th:if="${user.role != 'admin'}">
+                                <a th:href="@{/posts/{id}(id=${post.id})}" class="btn btn-primary">Read More</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
         <!-- Section: Content -->
-    
-        <!-- Pagination (Optional) -->
-        <nav class="my-4" aria-label="...">
-            <ul class="pagination pagination-circle justify-content-center">
-                <li class="page-item">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item active" aria-current="page">
-                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                </li>
-            </ul>
-        </nav>
     </div>
-    
 </main>
 <!--Main layout-->
-
 <!--Footer-->
 <footer class="bg-light text-lg-start">
-
     <hr class="m-0"/>
-
-    <div class="text-center py-4 align-items-center">
-        <p>Follow MDB on social media</p>
-        <a href="https://www.youtube.com/channel/UC5CF7mLQZhvx8O5GODZAhdA" class="btn btn-primary m-1" role="button"
-           data-mdb-ripple-init rel="nofollow" target="_blank">
-            <i class="fab fa-youtube"></i>
-        </a>
-        <a href="https://www.facebook.com/mdbootstrap" class="btn btn-primary m-1" role="button" rel="nofollow"
-           data-mdb-ripple-init target="_blank">
-            <i class="fab fa-facebook-f"></i>
-        </a>
-        <a href="https://twitter.com/MDBootstrap" class="btn btn-primary m-1" role="button" rel="nofollow"
-           data-mdb-ripple-init target="_blank">
-            <i class="fab fa-twitter"></i>
-        </a>
-        <a href="https://github.com/mdbootstrap/mdb-ui-kit" class="btn btn-primary m-1" role="button" rel="nofollow"
-           data-mdb-ripple-init target="_blank">
-            <i class="fab fa-github"></i>
-        </a>
-    </div>
-
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-        © 2020 Copyright:
-        <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+        © 2024 Blog Application
     </div>
     <!-- Copyright -->
 </footer>

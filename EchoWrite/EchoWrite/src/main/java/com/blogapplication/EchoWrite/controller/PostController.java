@@ -63,6 +63,12 @@ public class PostController {
         return "redirect:/posts";
     }
    
-
+    @GetMapping("/{id}")
+    public String viewPostDetails(@PathVariable Long id, Model model) {
+        Post post = postService.getPostById(id); // Fetch the post by its ID
+        model.addAttribute("post", post); // Add the post to the model
+        return "post_details"; // Return the view name for the post details page
+    }
+    
 
 }
