@@ -4,10 +4,17 @@ import com.blogapplication.EchoWrite.model.Post;
 import com.blogapplication.EchoWrite.model.User;
 import com.blogapplication.EchoWrite.service.PostService;
 import com.blogapplication.EchoWrite.service.UserService;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+
+
+
 
 @Controller
 @RequestMapping("/posts")
@@ -27,15 +34,25 @@ public class PostController {
     }
 
 
-    // Route for handling the form submission
-    @PostMapping("/create")
-    public String createPost(@ModelAttribute Post post) {
-        // Fetch the default user with ID 1
-        User defaultUser = userService.getUserById(1L); // Replace with appropriate method to fetch the user
-        post.setUser(defaultUser); // Associate the post with the default user
-        postService.createPost(post); // Save the post
-        return "redirect:/dashboard";
+   @PostMapping("/create")
+public String createPost(@ModelAttribute Post post, HttpSession session) {
+    // Retrieve the User object from the session
+    User currentUser = (User) session.getAttribute("user");
+    
+    // Check if the user is logged in
+    if (currentUser == null) {
+        return "redirect:/login"; // Redirect to login if no user is found in the session
     }
+
+    // Associate the post with the logged-in user
+    post.setUser(currentUser);
+    
+    // Save the post
+    postService.createPost(post);
+    
+    return "redirect:/dashboard"; // Redirect to the dashboard after successful post creation
+}
+
     
 
     // Route for editing a post by ID
@@ -53,14 +70,14 @@ public class PostController {
         User user = userService.getUserById(userId);
         post.setUser(user); // Update the user for the post
         postService.updatePost(id, post);
-        return "redirect:/posts";
+        return "redirect:/dashboard";
     }
 
     // Route for deleting a post by ID
     @GetMapping("/delete/{id}")
     public String deletePost(@PathVariable Long id) {
         postService.deletePost(id);
-        return "redirect:/posts";
+        return "redirect:/dashboard";
     }
    
     @GetMapping("/{id}")

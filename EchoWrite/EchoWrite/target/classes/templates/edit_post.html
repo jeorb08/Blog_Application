@@ -12,18 +12,20 @@
         <div class="card shadow-sm">
             <div class="card-body">
                 <form th:action="@{/posts/edit/{id}(id=${post.id})}" th:object="${post}" method="post">
+                    <input type="hidden" name="userId" th:value="${post.user.id}"/>
                     <div class="mb-3">
                         <label for="postTitle" class="form-label">Post Title</label>
-                        <input type="text" class="form-control" id="postTitle" th:field="*{title}" placeholder="Enter the title of your post" required>
+                        <input type="text" class="form-control" id="postTitle" th:field="*{postTitle}" placeholder="Enter the title of your post" required>
                     </div>
                     <div class="mb-3">
                         <label for="postDescription" class="form-label">Post Description</label>
-                        <textarea class="form-control" id="postDescription" th:field="*{description}" rows="5" placeholder="Enter the description of your post" required></textarea>
+                        <textarea class="form-control" id="postDescription" th:field="*{postDescription}" rows="5" placeholder="Enter the description of your post" required></textarea>
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">Update Post</button>
                     </div>
                 </form>
+                
             </div>
         </div>
     </div>
