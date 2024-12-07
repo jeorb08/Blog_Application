@@ -79,10 +79,8 @@
                 <div class="col-lg-4 col-md-6 mb-4" th:each="post : ${posts}">
                     <div class="card">
                         <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
-                            <img src="https://mdbootstrap.com/img/new/standard/nature/184.jpg" class="img-fluid" alt="Post Image">
-                            <a href="#!">
-                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                            </a>
+                            <img th:src="@{/uploads/{imageName}(imageName=${post.imageName})}" alt="Uploaded Image" class="img-fluid">
+
                         </div>
                         <div class="card-body">
                             <h5 class="card-title" th:text="${post.postTitle}">Post Title</h5>

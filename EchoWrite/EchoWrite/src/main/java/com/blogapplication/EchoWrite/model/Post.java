@@ -12,6 +12,7 @@ public class Post {
 
     private String postTitle;
     private String postDescription;
+    private String imageName;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
