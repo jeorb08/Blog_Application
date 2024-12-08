@@ -5,7 +5,6 @@ import com.blogapplication.EchoWrite.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,16 +13,23 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    // Login method
     public Optional<User> login(String email, String password) {
-        return userRepository.findByEmailAndPassword(email, password);
+        return userRepository.findByEmailAndPassword(email, password);  // Ensure passwords are hashed in real apps
     }
 
-
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    // Register user
+    public void registerUser(User user) {
+        userRepository.save(user);
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+public User getUserById(Long userId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getUserById'");
+}
+
+public Object getAllUsers() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllUsers'");
+}
 }

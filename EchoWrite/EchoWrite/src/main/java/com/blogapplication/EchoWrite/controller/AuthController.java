@@ -19,11 +19,10 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    
     // Redirect root URL to login page
     @GetMapping("/")
     public String redirectToLogin() {
-        return "redirect:/login";
+        return "redirect:/register";
     }
 
     // Serve the login page
@@ -69,4 +68,4 @@ public class AuthController {
         session.invalidate();
         return "redirect:/login"; // Redirect to login page after logout
     }
-}
+} 
