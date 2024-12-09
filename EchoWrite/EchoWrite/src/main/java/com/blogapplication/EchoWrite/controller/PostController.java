@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/posts")
@@ -37,6 +38,7 @@ public class PostController {
         return "create_post"; // View for creating a post
     }
 
+    // Route for creating a post
     @PostMapping("/create")
     public String createPost(@ModelAttribute Post post, 
                              @RequestParam(value = "image", required = false) MultipartFile image, 
@@ -73,23 +75,32 @@ public class PostController {
         return "redirect:/dashboard"; // Redirect to the dashboard
     }
 
-   // Route for editing a post by ID
-   @GetMapping("/edit/{id}")
-   public String showEditPostForm(@PathVariable Long id, Model model) {
-       Post existingPost = postService.getPostById(id);
-       model.addAttribute("post", existingPost);
-       model.addAttribute("users", userService.getAllUsers()); // Include users for reassignment if needed
-       return "edit_post";
-   }
+    // Route for editing a post by ID
+    @GetMapping("/edit/{id}")
+    public String showEditPostForm(@PathVariable Long id, Model model) {
+        Post existingPost = postService.getPostById(id);
+        model.addAttribute("post", existingPost);
+        model.addAttribute("users", userService.getAllUsers()); // Include users for reassignment if needed
+        return "edit_post";
+    }
 
-   // Route for updating a post by ID
-   @PostMapping("/edit/{id}")
-   public String updatePost(@PathVariable Long id, @ModelAttribute Post post, @RequestParam("userId") Long userId) {
-       User user = userService.getUserById(userId);
-       post.setUser(user); // Update the user for the post
-       postService.updatePost(id, post);
-       return "redirect:/dashboard";
-   }
+    // Route for updating a post by ID
+    @PostMapping("/edit/{id}")
+    public String updatePost(@PathVariable Long id, @ModelAttribute Post post, @RequestParam("userId") Long userId) {
+        Optional<User> userOptional = userService.getUserById(userId); // Get user by ID
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get(); // Unwrap the Optional
+            post.setUser(user); // Set the user for the post
+            postService.updatePost(id, post); // Update the post in the database
+        } else {
+            // Handle the case where the user is not found
+            // You could add an error message or redirect to an error page
+            return "error"; // Example: Redirect to an error page
+        }
+
+        return "redirect:/dashboard"; // Redirect to the dashboard after updating
+    }
 
     // Route for deleting a post by ID
     @GetMapping("/delete/{id}")
@@ -98,11 +109,11 @@ public class PostController {
         return "redirect:/dashboard";
     }
 
+    // Route for viewing post details
     @GetMapping("/{id}")
     public String viewPostDetails(@PathVariable Long id, Model model) {
         Post post = postService.getPostById(id); // Fetch the post by its ID
         model.addAttribute("post", post); // Add the post to the model
         return "post_details"; // Return the view name for the post details page
     }
-    
 }
