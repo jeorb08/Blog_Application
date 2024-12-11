@@ -94,9 +94,8 @@ public class PostController {
             post.setUser(user); // Set the user for the post
             postService.updatePost(id, post); // Update the post in the database
         } else {
-            // Handle the case where the user is not found
-            // You could add an error message or redirect to an error page
-            return "error"; // Example: Redirect to an error page
+            
+            return "error"; 
         }
 
         return "redirect:/dashboard"; // Redirect to the dashboard after updating
